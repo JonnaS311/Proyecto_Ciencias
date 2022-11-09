@@ -5,6 +5,7 @@ class ArbolBinario:
 
     def __init__(self):
         self.raiz = None
+        self.altura = None
 
     @staticmethod
     def agregarNodo(value):
@@ -36,7 +37,7 @@ class ArbolBinario:
             else:
                 return self.buscar(index, raiz.getRight())
 
-    def eliminar(self, nodo, raiz: nodo.Nodo):
+    def eliminar(self, nodo, raiz):
         if nodo == raiz:
             # Eliminación de un Nodo hoja
             if raiz.getLeft() is None and raiz.getRight() is None:
@@ -86,6 +87,36 @@ class ArbolBinario:
             else:
                 self.eliminar(nodo, raiz.getRight())
         return
+
+    def preorden(self, nodo, lista=None)-> list:
+        if lista is None:
+            lista = []
+        if nodo is not None:
+            lista.append(nodo.getValue())
+            self.preorden(nodo.getLeft(),lista)
+            self.preorden(nodo.getRight(),lista)
+        return lista
+
+    def inorden(self,nodo,lista=None) -> list:
+        if lista is None:
+            lista = []
+        if nodo.getLeft() is not None:
+            self.inorden(nodo.getLeft(),lista)
+            lista.append(nodo.getValue())
+            if nodo.getRight() is not None:
+                self.inorden(nodo.getRight(),lista)
+        else:
+            lista.append(nodo.getValue())
+            if nodo.getRight() is not None:
+                self.inorden(nodo.getRight(),lista)
+
+        return lista
+
+    def postorden(self,nodo,lista=None) -> list:
+        if lista is None:
+            lista = []
+        # Ni idea de como hacerlo :v
+        return lista
 
     def getRaiz(self):
         return self.raiz

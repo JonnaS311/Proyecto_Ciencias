@@ -14,7 +14,9 @@ if __name__ == '__main__':
     arbol.insertar(13, arbol.getRaiz())
     arbol.insertar(35, arbol.getRaiz())
     arbol.insertar(42, arbol.getRaiz())
+    arbol.insertar(6, arbol.getRaiz())
 
-    arbol.eliminar(arbol.buscar(40,arbol.getRaiz()),arbol.getRaiz())
-    print(arbol.buscar(42,arbol.getRaiz()).getParent().getValue())
-    print(arbol.buscar(20, arbol.getRaiz()).getRight().getValue())
+    #print(arbol.buscar(6,arbol.getRaiz()).getParent().getValue())
+    print(arbol.preorden(arbol.getRaiz()))
+    print(arbol.inorden(arbol.getRaiz()))
+    print(arbol.postorden(arbol.getRaiz()))
