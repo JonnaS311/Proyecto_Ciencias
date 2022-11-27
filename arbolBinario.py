@@ -1,6 +1,4 @@
 import nodo
-
-
 class ArbolBinario:
 
     def __init__(self):
@@ -16,14 +14,17 @@ class ArbolBinario:
             self.raiz = self.agregarNodo(value)
             return
         if nodo is None:
-            return self.agregarNodo(value)
+            nodoF = self.agregarNodo(value)
+            return nodoF
         else:
             if value <= nodo.getValue():
                 nodo.setLeft(self.insertar(value, nodo.getLeft()))
                 nodo.getLeft().setParent(nodo)
+                self.FactorEquilibrio(nodo.getLeft())
             else:
                 nodo.setRight(self.insertar(value, nodo.getRight()))
                 nodo.getRight().setParent(nodo)
+                self.FactorEquilibrio(nodo.getRight())
             return nodo
 
     def buscar(self, index, raiz):
@@ -36,6 +37,23 @@ class ArbolBinario:
                 return self.buscar(index, raiz.getLeft())
             else:
                 return self.buscar(index, raiz.getRight())
+
+    def FactorEquilibrio(self, nodo):
+        # print( nodo.getValue())
+        if nodo.getBalanceF() > 1 or nodo.getBalanceF() < -1:
+            # print('nodo balanceando', nodo.getValue())
+            # self.balancear(nodo)
+            return
+        if nodo.getParent() != None:
+            if nodo.getParent().getLeft() == nodo:
+                nodo.getParent().setBalanceF(nodo.getParent().getBalanceF() - 1)
+                # print('1-Este es el nodo', nodo.getValue(),'Este es el nodo padre', nodo.getParent().getValue(),'B:', nodo.getParent().getBalanceF())
+            elif nodo.getParent().getRight() == nodo:
+                nodo.getParent().setBalanceF(nodo.getParent().getBalanceF() + 1)
+                # print('2-Este es el nodo', nodo.getValue(),'Este es el nodo', nodo.getParent().getValue(),'B:', nodo.getParent().getBalanceF())
+        if nodo.getParent() != None and nodo.getParent().getBalanceF() != 0:
+            # print('Este es el nodo padre', nodo.getParent().getValue(),'B:', nodo.getParent().getBalanceF())
+            self.FactorEquilibrio(nodo.getParent())
 
     def eliminar(self, nodo, raiz):
         if nodo == raiz:
@@ -88,6 +106,10 @@ class ArbolBinario:
                 self.eliminar(nodo, raiz.getRight())
         return
 
+    def balanceo(self,nodo):
+        # TODO: este método debe implementarse en una clase Hija Avl con todos las rotaciones
+       pass
+
     def preorden(self, nodo, lista=None)-> list:
         if lista is None:
             lista = []
@@ -120,3 +142,6 @@ class ArbolBinario:
 
     def getRaiz(self):
         return self.raiz
+
+    def setRaiz(self,raiz):
+        self.raiz = raiz

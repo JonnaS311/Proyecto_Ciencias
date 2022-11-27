@@ -5,6 +5,7 @@ class Nodo:
         self.__right = None
         self.__left = None
         self.__parent = None
+        self.__balanceF = 0
 
     def setParent(self,nodo):
         self.__parent = nodo
@@ -26,3 +27,9 @@ class Nodo:
 
     def getValue(self):
         return self.__value
+
+    def getBalanceF(self):
+        return self.__balanceF
+
+    def setBalanceF(self,num):
+        self.__balanceF = num
