@@ -37,14 +37,12 @@ class ArbolBinario:
             else:
                 return self.buscar(index, raiz.getRight())
 
-    def eliminar(self, nodo, raiz):
-        if nodo == raiz:
+    def eliminar(self, raiz):
             # Eliminación de un Nodo hoja
             if raiz.getLeft() is None and raiz.getRight() is None:
-                if raiz.getParent().getLeft() == raiz:
-                    raiz.getParent().setLeft(None)
-                else:
-                    raiz.getParent().setRight(None)
+                if raiz.getParent() is not None:
+                    if raiz.getParent().getLeft() == raiz: raiz.getParent().setLeft(None)
+                    else: raiz.getParent().setRight(None)
                 return
             else:
                 if raiz.getLeft() is not None and raiz.getRight() is None:
@@ -68,47 +66,69 @@ class ArbolBinario:
                 else:
                     # tiene dos hijos
                     candidato = raiz.getLeft()
+                    notRight = False
                     while candidato.getRight() is not None:
                         candidato = candidato.getRight()
+                        notRight = True
                     raiz.getRight().setParent(candidato)
                     raiz.getLeft().setParent(candidato)
-                    candidato.getParent().setRight(candidato.getLeft())
-                    candidato.setLeft(raiz.getLeft())
+                    if candidato.getLeft() is not None:
+                        candidato.getParent().setRight(candidato.getLeft())
+                        candidato.getLeft().setParent(candidato.getParent())
+                    else:
+                        candidato.getParent().setRight(None)
+                    if notRight:
+                        candidato.setLeft(raiz.getLeft())
                     candidato.setRight(raiz.getRight())
                     if raiz.getParent() is not None:
+                        candidato.setParent(raiz.getParent())
                         if raiz.getParent().getLeft() == raiz:
                             raiz.getParent().setLeft(candidato)
                         else:
                             raiz.getParent().setRight(candidato)
+                    else:
+                        self.raiz = candidato
+                        candidato.setParent(None)
                     return
-        elif raiz is not None and nodo is not None:
-            if nodo.getValue() <= raiz.getValue():
-                self.eliminar(nodo, raiz.getLeft())
-            else:
-                self.eliminar(nodo, raiz.getRight())
-        return
+
+    def getAltura(self,nodo,nivel=1):
+        nivelL,nivelR = 0,0
+        if nodo.getLeft() is not None:
+            nivelL = self.getAltura(nodo.getLeft(),nivel+1)
+        if nodo.getRight() is not None:
+            nivelR = self.getAltura(nodo.getRight(),nivel+1)
+
+        if nivelL > nivelR:
+            return nivelL
+        elif nivelR > nivelL:
+            return nivelR
+        elif nivelL == nivelR and nivelL != 0:
+            return nivelL
+        else:
+            return nivel
 
     def preorden(self, nodo, lista=None) -> list:
         if lista is None:
             lista = []
         if nodo is not None:
             lista.append(nodo.getValue())
-            self.preorden(nodo.getLeft(), lista)
-            self.preorden(nodo.getRight(), lista)
+            if nodo.getLeft() is not None: self.preorden(nodo.getLeft(), lista)
+            if nodo.getRight() is not None: self.preorden(nodo.getRight(), lista)
         return lista
 
     def inorden(self, nodo, lista=None) -> list:
         if lista is None:
             lista = []
-        if nodo.getLeft() is not None:
-            self.inorden(nodo.getLeft(), lista)
-            lista.append(nodo.getValue())
-            if nodo.getRight() is not None:
-                self.inorden(nodo.getRight(), lista)
-        else:
-            lista.append(nodo.getValue())
-            if nodo.getRight() is not None:
-                self.inorden(nodo.getRight(), lista)
+        if nodo is not None:
+            if nodo.getLeft() is not None:
+                self.inorden(nodo.getLeft(), lista)
+                lista.append(nodo.getValue())
+                if nodo.getRight() is not None:
+                    self.inorden(nodo.getRight(), lista)
+            else:
+                lista.append(nodo.getValue())
+                if nodo.getRight() is not None:
+                    self.inorden(nodo.getRight(), lista)
 
         return lista
 
@@ -116,8 +136,8 @@ class ArbolBinario:
         if lista is None:
             lista = []
         if nodo is not None:
-            self.postorden(nodo.getLeft(), lista)
-            self.postorden(nodo.getRight(), lista)
+            if nodo.getLeft() is not None: self.postorden(nodo.getLeft(), lista)
+            if nodo.getRight() is not None: self.postorden(nodo.getRight(), lista)
             lista.append(nodo.getValue())
         return lista
 
