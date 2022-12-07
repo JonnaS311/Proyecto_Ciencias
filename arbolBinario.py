@@ -38,58 +38,70 @@ class ArbolBinario:
                 return self.buscar(index, raiz.getRight())
 
     def eliminar(self, raiz):
-            # Eliminación de un Nodo hoja
-            if raiz.getLeft() is None and raiz.getRight() is None:
-                if raiz.getParent() is not None:
-                    if raiz.getParent().getLeft() == raiz: raiz.getParent().setLeft(None)
-                    else: raiz.getParent().setRight(None)
-                return
+        # Eliminación de un Nodo hoja
+        if raiz.getLeft() is None and raiz.getRight() is None:
+            if raiz.getParent() is not None:
+                if raiz.getParent().getLeft() == raiz:
+                    raiz.getParent().setLeft(None)
+                else:
+                    raiz.getParent().setRight(None)
             else:
-                if raiz.getLeft() is not None and raiz.getRight() is None:
-                    # si solo tiene hijo izquierdo
+                self.setRaiz(None)
+            return
+        else:
+            if raiz.getLeft() is not None and raiz.getRight() is None:
+                # si solo tiene hijo izquierdo
+                if raiz.getParent() is not None:
                     if raiz.getParent().getLeft() == raiz:
                         raiz.getParent().setLeft(raiz.getLeft())
                         raiz.getLeft().setParent(raiz.getParent())
                     else:
                         raiz.getParent().setRight(raiz.getLeft())
                         raiz.getLeft().setParent(raiz.getParent())
-                    return
-                elif raiz.getLeft() is None and raiz.getRight() is not None:
-                    # si solo tiene hijo derecho
+                else:
+                    raiz.getLeft().setParent(None)
+                    self.setRaiz(raiz.getLeft())
+                return
+            elif raiz.getLeft() is None and raiz.getRight() is not None:
+                # si solo tiene hijo derecho
+                if raiz.getParent() is not None:
                     if raiz.getParent().getLeft() == raiz:
                         raiz.getParent().setLeft(raiz.getRight())
                         raiz.getRight().setParent(raiz.getParent())
                     else:
                         raiz.getParent().setRight(raiz.getRight())
                         raiz.getRight().setParent(raiz.getParent())
-                    return
                 else:
-                    # tiene dos hijos
-                    candidato = raiz.getLeft()
-                    notRight = False
-                    while candidato.getRight() is not None:
-                        candidato = candidato.getRight()
-                        notRight = True
-                    raiz.getRight().setParent(candidato)
-                    raiz.getLeft().setParent(candidato)
-                    if candidato.getLeft() is not None:
-                        candidato.getParent().setRight(candidato.getLeft())
-                        candidato.getLeft().setParent(candidato.getParent())
+                    raiz.getRight().setParent(None)
+                    self.setRaiz(raiz.getRight())
+                return
+            else:
+                # tiene dos hijos
+                candidato = raiz.getLeft()
+                notRight = False
+                while candidato.getRight() is not None:
+                    candidato = candidato.getRight()
+                    notRight = True
+                raiz.getRight().setParent(candidato)
+                raiz.getLeft().setParent(candidato)
+                if candidato.getLeft() is not None:
+                    candidato.getParent().setRight(candidato.getLeft())
+                    candidato.getLeft().setParent(candidato.getParent())
+                else:
+                    candidato.getParent().setRight(None)
+                if notRight:
+                    candidato.setLeft(raiz.getLeft())
+                candidato.setRight(raiz.getRight())
+                if raiz.getParent() is not None:
+                    candidato.setParent(raiz.getParent())
+                    if raiz.getParent().getLeft() == raiz:
+                        raiz.getParent().setLeft(candidato)
                     else:
-                        candidato.getParent().setRight(None)
-                    if notRight:
-                        candidato.setLeft(raiz.getLeft())
-                    candidato.setRight(raiz.getRight())
-                    if raiz.getParent() is not None:
-                        candidato.setParent(raiz.getParent())
-                        if raiz.getParent().getLeft() == raiz:
-                            raiz.getParent().setLeft(candidato)
-                        else:
-                            raiz.getParent().setRight(candidato)
-                    else:
-                        self.raiz = candidato
-                        candidato.setParent(None)
-                    return
+                        raiz.getParent().setRight(candidato)
+                else:
+                    self.raiz = candidato
+                    candidato.setParent(None)
+                return
 
     def getAltura(self,nodo,nivel=1):
         nivelL,nivelR = 0,0

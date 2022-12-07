@@ -41,4 +41,6 @@ if __name__ == '__main__':
     arbol.eliminar(3)
     arbol.eliminar(22)
     arbol.eliminar(19)
+    arbol.eliminar(2)
+    arbol.eliminar(26)
     print(arbol.preorden())

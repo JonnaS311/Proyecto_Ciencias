@@ -44,28 +44,38 @@ class Avl(Ab.ArbolBinario):
                     if raiz.getParent().getLeft() == raiz: raiz.getParent().setLeft(None)
                     else: raiz.getParent().setRight(None)
                     self._FactorEquilibrio(tmp)
+                else:
+                    self.setRaiz(None)
                 return
             else:
                 if raiz.getLeft() is not None and raiz.getRight() is None:
                     # si solo tiene hijo izquierdo
                     tmp = raiz.getLeft()
-                    if raiz.getParent().getLeft() == raiz:
-                        raiz.getParent().setLeft(raiz.getLeft())
-                        raiz.getLeft().setParent(raiz.getParent())
+                    if raiz.getParent() is not None:
+                        if raiz.getParent().getLeft() == raiz:
+                            raiz.getParent().setLeft(raiz.getLeft())
+                            raiz.getLeft().setParent(raiz.getParent())
+                        else:
+                            raiz.getParent().setRight(raiz.getLeft())
+                            raiz.getLeft().setParent(raiz.getParent())
                     else:
-                        raiz.getParent().setRight(raiz.getLeft())
-                        raiz.getLeft().setParent(raiz.getParent())
+                        raiz.getLeft().setParent(None)
+                        self.setRaiz(raiz.getLeft())
                     self._FactorEquilibrio(tmp)
                     return
                 elif raiz.getLeft() is None and raiz.getRight() is not None:
                     # si solo tiene hijo derecho
                     tmp = raiz.getRight()
-                    if raiz.getParent().getLeft() == raiz:
-                        raiz.getParent().setLeft(raiz.getRight())
-                        raiz.getRight().setParent(raiz.getParent())
+                    if raiz.getParent() is not None:
+                        if raiz.getParent().getLeft() == raiz:
+                            raiz.getParent().setLeft(raiz.getRight())
+                            raiz.getRight().setParent(raiz.getParent())
+                        else:
+                            raiz.getParent().setRight(raiz.getRight())
+                            raiz.getRight().setParent(raiz.getParent())
                     else:
-                        raiz.getParent().setRight(raiz.getRight())
-                        raiz.getRight().setParent(raiz.getParent())
+                        raiz.getRight().setParent(None)
+                        self.setRaiz(raiz.getRight())
                     self._FactorEquilibrio(tmp)
                     return
                 else:
