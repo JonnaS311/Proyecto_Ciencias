@@ -5,7 +5,7 @@ Graficador de arboles Avl con operaciones básicas
 
 Jonnathan Sotelo Rodríguez \
 Danna Sofia Villanueva Orjuela \
-Thomas Felipe Sarmiento Oñate \
+Thomas Felipe Sarmiento Oñate 
 
 
 Ciencias de la Computación I 
