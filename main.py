@@ -74,6 +74,8 @@ def main(page: Page):
         RecorridoInorden.value = "Recorrido Inorden : " + str(arbol.inorden(arbol.getRaiz()))
         RecorridoPreorden.value = "Recorrido Preorden : " + str(arbol.preorden(arbol.getRaiz()))
         RecorridoPostorden.value = "Recorrido Postorden : " + str(arbol.postorden(arbol.getRaiz()))
+
+        texto1.value = ''
         page.update()
 
     EliminarNodo = flet.ElevatedButton(
@@ -113,7 +115,7 @@ def main(page: Page):
         RecorridoPostorden.value = "Recorrido Postorden : " + str(arbol.postorden(arbol.getRaiz()))
 
         agregarnodorecursivo(arbol.getRaiz(), 0)
-
+        texto1.value = ''
         page.update()
 
     AgregarNodo = flet.ElevatedButton(
